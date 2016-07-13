@@ -5,10 +5,10 @@ import com.hamoid.*;
 Serial myPort;  // The serial port
 Serial myPort1;
 
-float[] r = new float[9];
-float[] r1 = new float[9];
-float[] temp_r = new float[9];
-float[] temp_r1 = new float[9];
+float[] r = new float[29];
+float[] r1 = new float[29];
+float[] temp_r = new float[29];
+float[] temp_r1 = new float[29];
 
 int flag; //calibration
 
@@ -22,7 +22,7 @@ Table table;
 
 int flagStart = 0, flagStop = 0, flagE = 0, flagF = 0;
 
-float sL, sR, sF, sB;
+float sL, sR, sF, sB, new_sF, new_sB;
 
 float x_p, y_p, distance;
 
@@ -105,7 +105,7 @@ void setup() {
   printArray(Serial.list());
   // Open the port you are using at the rate you want:
   myPort = new Serial(this, Serial.list()[1], 9600);
-  myPort1 = new Serial(this, Serial.list()[4], 38400);
+  myPort1 = new Serial(this, Serial.list()[0], 38400);
   //myPort1 = myPort;
   
   String y_s = str(year());
@@ -129,7 +129,8 @@ void setup() {
   sR = 0;
   sF = 0;
   sB = 0;
-
+  new_sF = 0;
+  new_sB = 0;
 
   
   f = createFont("Arial",16,true); 
@@ -145,7 +146,7 @@ void setup() {
 void draw() {
 
   background(255);
-  tint(128,30);
+  tint(128,70);
   image(bg, 0, 0, bg.width/4, bg.height/4);
   
     //time into string
@@ -201,20 +202,20 @@ void draw() {
   if(flagStart == 0 && flagStop == 1 && flagF == 0 && flagE == 0){
     stroke(0,255,0);
     fill(255,0);
-    rect(975, 255, 50, 40);
+    rect(845, 198, 65, 45);
 
   }
     //rating
   if(flagStart == 0 && flagStop == 0 && flagF == 1 && flagE == 0){
     stroke(0,255,0);
     fill(255,0);
-    rect(975, 355, 50, 40);
+    rect(845, 250, 65, 45);
   } 
     //submit
   if(flagStart == 0 && flagStop == 0 && flagF == 0 && flagE == 1){
     stroke(0,255,0);
     fill(255,0);
-    rect(835, 595, 110, 60);
+    rect(808, 320, 145, 55);
    
   }      
   
@@ -222,51 +223,51 @@ void draw() {
   fill(255);
   stroke(0);
   strokeWeight(1);
-  rect(914,255,60,40);//text box for score
+  rect(770,198,60,40);//text box for score
   textFont(f,16);                  
   fill(0);                         
-  text(nfc(score,1),905,260);
+  text(nfc(score,1),760,204);
   
   fill(255);
-  rect(914,355,60,40);//text box for rating
+  rect(770,250,60,40);//text box for rating
   textFont(f,16);                  
   fill(0);                         
-  text(str(rating),905,360);
+  text(str(rating),765,256);
   
   fill(50);
-  rect(975, 255, 45, 35);//enter button for score
+  rect(845, 198, 60, 40);//enter button for score
   textFont(f,13);                  
   fill(255);                         
-  text("Enter",959,253);
-  text("score",958,265);
+  text("Enter",830,195);
+  text("score",828,210);
   
   fill(50);
-  rect(975, 355, 45, 35);//enter button for rating
+  rect(845, 250, 60, 40);//enter button for rating
   textFont(f,13);                  
   fill(255);                         
-  text("Enter",959,353);
-  text("rating",958,365);
+  text("Enter",830,245);
+  text("rating",828,260);
   
   //submit
   fill(50);
   stroke(0);
-  rect(835, 595, 100, 50);
+  rect(808, 320, 140, 50);
   textFont(f,20);
   //strokeWeight(10);
   fill(255);                         
-  text("SUBMIT",800,600);
+  text("SUBMIT",775,325);
   
   //calibrate button
   fill(100,0,50);
   stroke(0);
-  rect(700,700, 100,25);
+  rect(808,450, 100,25);
   fill(255);
   textFont(f,14);
-  text("CALIBRATE",663,705);
+  text("CALIBRATE",767,453);
   
     //calibrate
-  if (mousePressed && mouseX<750 && mouseX>650 && mouseY<713 && mouseY>688) {
-    for(int i=0; i<9; i++) {
+  if (mousePressed && mouseX<858 && mouseX>758 && mouseY<463 && mouseY>438) {
+    for(int i=0; i<28; i++) {
       temp_r[i]=r[i];  //TEMP_R NOT USED YET
       temp_r1[i]=r1[i];
     }
@@ -275,7 +276,7 @@ void draw() {
   } 
   
   //submit data
-  if(mousePressed && mouseX<885 && mouseX>785 && mouseY<620 && mouseY>570 && flagE == 1){
+  if(mousePressed && mouseX<878 && mouseX>738 && mouseY<345 && mouseY>295 && flagE == 1){
     output.println("STOP");
     output.println();
     output1.println("STOP");
@@ -295,9 +296,9 @@ void draw() {
   //println(str(flagStart) + " " + str(flagStop) + " " +str(flagF) + " " + str(flagE));
   
   
-  //write score
+  //write score 845, 198, 60, 40
   if(flagStop== 1){
-    if(mousePressed && mouseX<998 && mouseX>952 && mouseY<267 && mouseY>243){      
+    if(mousePressed && mouseX<875 && mouseX>815 && mouseY<218 && mouseY>178){      
       flagStop = 0;
       flagF = 1;
       output.print(nfc(score,1)+"  ");
@@ -305,8 +306,8 @@ void draw() {
     }
   }
   
-  //write feeling
-  if(flagF == 1 && flagE == 0 && mousePressed && mouseX<998 && mouseX>952 && mouseY<367 && mouseY>343){
+  //write feeling 845, 250, 60, 40
+  if(flagF == 1 && flagE == 0 && mousePressed && mouseX<875 && mouseX>815 && mouseY<270 && mouseY>230){
     flagF = 0;
     flagE = 1;
     output.println(str(rating));
@@ -315,8 +316,8 @@ void draw() {
   }
   
  
-  //end session
-  if (mousePressed && mouseX<957 && mouseX>925 && mouseY<72 && mouseY>40 && flagStart == 0 && flagStop == 0 && flagE == 0){
+  //end session 925,40,stopimg.width/8,stopimg.height/8
+  if (mousePressed && mouseX<(925+stopimg.width/8) && mouseX>925 && mouseY<(40+stopimg.height/8) && mouseY>40 && flagStart == 0 && flagStop == 0 && flagE == 0){
       output.close();
       output1.close();
       exit();
@@ -366,14 +367,14 @@ void draw() {
     if (inBuffer != null) {
 
       float[] q = float(split(inBuffer, ","));
-      if(q.length == 9) 
+      if(q.length == 29) 
       {
         sL = 0;
-        for(int i=0; i<8; i++) {
+        for(int i=0; i<10; i++) {
           r[i]=q[i]/4;
           sL = sL+q[i];
         }
-        r[8] = radians(q[8]);
+        r[10] = radians(q[10]);
         
       }
       if(flagStart == 1){
@@ -390,14 +391,14 @@ void draw() {
      String inBuffer1 = myPort1.readStringUntil(10);   
     if (inBuffer1 != null) {
       float[] q1 = float(split(inBuffer1, ","));
-      if(q1.length == 9) 
+      if(q1.length == 29) 
       {
         sR = 0;
-        for(int i=0; i<8; i++) {
+        for(int i=0; i<10; i++) {
           r1[i]=q1[i]/4;
           sR = sR + q1[i];
         }
-        r1[8] = radians(q1[8]);
+        r1[10] = radians(q1[10]);
         
       }
       if(flagStart == 1){
@@ -409,8 +410,14 @@ void draw() {
      //println();
   }
 
-  sF = r[0] + r1[0] + r[1] + r1[1] + r[2] + r1[2] + r[3] + r1[3] + r[4] + r1[4];
-  sB = r[5] + r1[5] + r[6] + r1[6] + r[7] + r1[7];
+  sF = r[0] + r1[0] + r[1] + r1[1] + r[2] + r1[2] + r[3] + r1[3] + r[4] + r1[4] + r[8] + r1[8];
+  sB = r[5] + r1[5] + r[6] + r1[6] + r[7] + r1[7] + r[9] + r1[9];
+  
+  //weighted according distance from center line
+  new_sF = (311*(r[0] + r1[0]) + 196*(r[1] + r1[1]) + 183*(r[2] + r1[2]) + 133*(r[3] + r1[3]) + 74*(r[4] + r1[4]) + 23*(r[8] + r1[8]))/920;
+  new_sB = (214*(r[5] + r1[5]) + 226*(r[6] + r1[6]) + 312*(r[7] + r1[7]) + 37*(r[9] + r1[9]))/789;
+  
+  
 
   
   y_p = map((sF-sB)*4, -2500, 2500, -380, 380);
@@ -442,54 +449,84 @@ void draw() {
     }
     textFont(f,16);                  
     fill(0);                         
-    text("Distance moved:"+nfc(distance/100,2),700,305);
+    text("Distance moved:"+nfc(distance/100,2),720,400);
     }
     
   
   
 
   display();
-  
+  println(str(mouseX) + " " + str(mouseY));
   
 
 }
 
 void display(){
 
+  float rad = 40;
+  
   //display pressure points
   fill(0,35);
   noStroke();
          //left shoe
-  ellipse(96.5,190.5,r[1],r[1]); //1
-  ellipse(207.35,145,r[0],r[0]); //2
-  ellipse(227.25,263.4,r[2],r[2]);//5
-  ellipse(149.5,319,r[3],r[3]);//4
-  ellipse(74.25,394,r[4],r[4]);//3
-  ellipse(141,712.6,r[5],r[5]);//6
-  ellipse(244,694.65,r[6],r[6]);//7
-  ellipse(207.3,783.6,r[7],r[7]);//8
-        //right shoe
-  ellipse(537.6,193.65,r1[1],r1[1]); //1
-  ellipse(428.8,144.1,r1[0],r1[0]); //2
-  ellipse(404.1,260.5,r1[2],r1[2]);//5
-  ellipse(480,319.8,r1[3],r1[3]);//4
-  ellipse(550,398,r1[4],r1[4]);//3
-  ellipse(470,712.9,r1[5],r1[5]);//6
-  ellipse(367.5,692,r1[6],r1[6]);//7
-  ellipse(401.1,782,r1[7],r1[7]);//8
+  ellipse(78,242,r[1],r[1]); //1
+  ellipse(236,147,r[0],r[0]); //2
+  ellipse(236,265,r[2],r[2]);//5
+  ellipse(147,305,r[3],r[3]);//4
+  ellipse(78,364,r[4],r[4]);//3
+  ellipse(96,652,r[5],r[5]);//6
+  ellipse(183,664,r[6],r[6]);//7
+  ellipse(137,750,r[7],r[7]);//8
+  ellipse(91,475,r[9],r[9]);//9
+  ellipse(175,415,r[8],r[8]);//10
+  //      //right shoe
+  ellipse(540,234,r1[1],r1[1]); //1
+  ellipse(380,140,r1[0],r1[0]); //2
+  ellipse(383,258,r1[2],r1[2]);//5
+  ellipse(470,296,r1[3],r1[3]);//4
+  ellipse(540,357,r1[4],r1[4]);//3
+  ellipse(522,644,r1[5],r1[5]);//6
+  ellipse(434,655,r1[6],r1[6]);//7
+  ellipse(480,744,r1[7],r1[7]);//8
+  ellipse(528,467,r1[9],r1[9]);//9
+  ellipse(442,407,r1[8],r1[8]);//10
+  
+  
+  //ellipse(78,242,rad,rad); //1
+  //ellipse(236,147,rad,rad); //2
+  //ellipse(236,265,rad,rad);//5
+  //ellipse(147,305,rad,rad);//4
+  //ellipse(78,364,rad,rad);//3
+  //ellipse(96,652,rad,rad);//6
+  //ellipse(183,664,rad,rad);//7
+  //ellipse(137,750,rad,rad);//8
+  //ellipse(91,475,rad,rad);//9
+  //ellipse(175,415,rad,rad);//10
+  //      //right shoe
+  //ellipse(540,234,rad,rad); //1
+  //ellipse(380,140,rad,rad); //2
+  //ellipse(383,258,rad,rad);//5
+  //ellipse(470,296,rad,rad);//4
+  //ellipse(540,357,rad,rad);//3
+  //ellipse(522,644,rad,rad);//6
+  //ellipse(434,655,rad,rad);//7
+  //ellipse(480,744,rad,rad);//8
+  //ellipse(528,467,rad,rad);//9
+  //ellipse(442,407,rad,rad);//10
+  
   
   //display magnetometer
   if(flag == 0){
 
     pushMatrix();
-    translate(650, 800); 
+    translate(750, 550); 
     rotate(r[8]);
     fill(100);
     rect(0, 0, 40, 100);
     popMatrix();
     
     pushMatrix();
-    translate(750, 800); 
+    translate(850, 550); 
     rotate(r1[8]);
     fill(100);
     rect(0, 0, 40, 100);
@@ -497,31 +534,31 @@ void display(){
     
     textFont(f,16);                  
     fill(0);                         
-    text("Uncalibrated",700,900);   
+    text("Uncalibrated",750,630);   
   }
   if(flag == 1){
 
     pushMatrix();
-    translate(650, 800); 
-    rotate(temp_r[8]-r[8]);
+    translate(750, 550); 
+    rotate(temp_r[10]-r[10]);
     fill(100);
     rect(0, 0, 40, 100);
     popMatrix();
     
     textFont(f,16);                  
     fill(0);                         
-    text(str(round(degrees(temp_r[8]-r[8]))),650,950);
+    text(str(round(degrees(temp_r[10]-r[10]))),747,630);
     
     pushMatrix();
-    translate(750, 800); 
-    rotate(temp_r1[8]-r1[8]);
+    translate(850, 550); 
+    rotate(temp_r1[10]-r1[10]);
     fill(100);
     rect(0, 0, 40, 100);
     popMatrix();
     
     textFont(f,16);                  
     fill(0);                         
-    text(str(round(degrees(temp_r1[8]-r1[8]))),750,950);
+    text(str(round(degrees(temp_r1[10]-r1[10]))),847,630);
 
     
   }
